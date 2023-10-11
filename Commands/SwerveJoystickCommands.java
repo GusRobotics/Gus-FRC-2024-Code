@@ -42,7 +42,7 @@ public class SwerveJoystickCommands extends CommandBase {
         double xSpeed = xSpdFunction.get();
         double ySpeed = ySpdFunction.get();
         
-        double turningSpeed = turningSpd
+        //double turningSpeed = turningSpd
         double turningSpeed = turningSpdFunction.get();
 
         //2. apply deadband (if controller doesn't center back to exactly 0, ignore small inputs to protect motors)
@@ -80,7 +80,7 @@ public class SwerveJoystickCommands extends CommandBase {
     }
 
     @Override
-    public void end(boolean interrupted){
+    public void end(boolean interrupted) {
         swerveSubsystem.stopModules();
     }
 

@@ -48,15 +48,16 @@ public class SwerveSubsystem extends SubsystemBase {
             DriveConstants.kBackRightDriveAbsoluteEncoderOffsetRad,
             DriveConstants.kBackRightDriveAbsoluteEncoderReversed);
 
-    
-    //We want to reset gyroscope everytime robot boots up 
-    //can't call in constructor bc gyro is busy recallibrating when it boots up so delay one second 
-    //then request reset and put on different thread to avoid blocking the rest of the code
+    // We want to reset gyroscope everytime robot boots up
+    // can't call in constructor bc gyro is busy recallibrating when it boots up so
+    // delay one second
+    // then request reset and put on different thread to avoid blocking the rest of
+    // the code
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);
     private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
             new Rotation2d(0));
 
-     public SwerveSubsystem() {
+    public SwerveSubsystem() {
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
@@ -70,17 +71,17 @@ public class SwerveSubsystem extends SubsystemBase {
         gyro.reset();
     }
 
-    //function to get robot heading from gyroscope
-    //default value is continuous (360, 720 degrees, etc)
+    // function to get robot heading from gyroscope
+    // default value is continuous (360, 720 degrees, etc)
     public double getHeading() {
         return Math.IEEEremainder(gyro.getAngle(), 360);
     }
 
-    //wpi lib like format of rotation 2d so this function converts it
+    // wpi lib like format of rotation 2d so this function converts it
     public Rotation2d getRotation2d() {
         return Rotation2d.fromDegrees(getHeading());
     }
-    
+
     public Pose2d getPose() {
         return odometer.getPoseMeters();
     }
@@ -89,13 +90,13 @@ public class SwerveSubsystem extends SubsystemBase {
         odometer.resetPosition(pose, getRotation2d());
     }
 
-    //monitor robot heading value in periodic function
+    // monitor robot heading value in periodic function
     @Override
     public void periodic() {
         odometer.update(getRotation2d(), frontLeft.getState(), frontRight.getState(), backLeft.getState(),
-        backRight.getState());
+                backRight.getState());
         SmartDashboard.putNumber("Robot Heading", getHeading());
-        SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());    
+        SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     }
 
     public void stopModules() {
@@ -105,9 +106,10 @@ public class SwerveSubsystem extends SubsystemBase {
         backRight.stop();
     }
 
-    //takes in array of 4 module states and applies them all but first need to normalize wheel speed
-    //keeps wheels from capping at max speed and losing control of speed
-    //proportionally increases speeds to prevent this problem
+    // takes in array of 4 module states and applies them all but first need to
+    // normalize wheel speed
+    // keeps wheels from capping at max speed and losing control of speed
+    // proportionally increases speeds to prevent this problem
     public void setModuleStates(SweveModuleState[] desiredStates) {
         SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
         frontLeft.setDesiredState(desiredStates[0]);
