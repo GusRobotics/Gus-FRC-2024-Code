@@ -1,0 +1,23 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "gradle",
+			"id": "c:\\Users\\gus22\\OneDrive\\Documents\\GUSRepositories\\Gus FRC 2024 Codeapp:buildapp",
+			"script": "app:build",
+			"description": "Assembles and tests this project.",
+			"group": "build",
+			"project": "app",
+			"buildFile": "C:\\Users\\gus22\\OneDrive\\Documents\\GUSRepositories\\Gus FRC 2024 Code\\app\\build.gradle",
+			"rootProject": "Gus FRC 2024 Code",
+			"projectFolder": "c:\\Users\\gus22\\OneDrive\\Documents\\GUSRepositories\\Gus FRC 2024 Code",
+			"workspaceFolder": "c:\\Users\\gus22\\OneDrive\\Documents\\GUSRepositories\\Gus FRC 2024 Code",
+			"args": "",
+			"javaDebug": false,
+			"problemMatcher": [
+				"$gradle"
+			],
+			"label": "gradle: app:build"
+		}
+	]
+}
