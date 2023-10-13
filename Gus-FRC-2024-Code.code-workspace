@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../Gus-FRC-2024-Code"
+		},
+		{
+			"name": "Gus-FRC-2024-Code-1",
+			"path": "."
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "interactive"
+	}
+}
