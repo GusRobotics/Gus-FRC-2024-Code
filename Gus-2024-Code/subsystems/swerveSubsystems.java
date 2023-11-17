@@ -84,24 +84,24 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        odometer.update(getRotation2d(), frontLeft.getState(), frontRight.getState(), backLeft.getState(),
-                backRight.getState());
+        odometer.update(getRotation2d(), blue.getState(), orange.getState(), green.getState(),
+                red.getState());
         SmartDashboard.putNumber("Robot Heading", getHeading());
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     }
 
     public void stopModules() {
-        frontLeft.stop();
-        frontRight.stop();
-        backLeft.stop();
-        backRight.stop();
+        blue.stop();
+        orange.stop();
+        green.stop();
+        red.stop();
     }
 
     public void setModuleStates(SwerveModuleState[] desiredStates) {
         SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
-        frontLeft.setDesiredState(desiredStates[0]);
-        frontRight.setDesiredState(desiredStates[1]);
-        backLeft.setDesiredState(desiredStates[2]);
-        backRight.setDesiredState(desiredStates[3]);
+        blue.setDesiredState(desiredStates[0]);
+        orange.setDesiredState(desiredStates[1]);
+        green.setDesiredState(desiredStates[2]);
+        red.setDesiredState(desiredStates[3]);
     }
 }
