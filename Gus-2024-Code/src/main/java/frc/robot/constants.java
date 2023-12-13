@@ -5,37 +5,27 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 public class constants {
-    public static final class ModuleConstants {
-        private ModuleConstants() {
-            // Private constructor to prevent instantiation
-        }
-
         // I STOLE THESE CONSTANTS... CONFIRM ACCURACY!
         public static final double kWheelDiameterMeters = Units.inchesToMeters(4);
         public static final double kDriveMotorGearRatio = 1 / 5.8462;
         public static final double KTurningMotorGearRatio = 1 / 18.0;
-        public static final double KDRIVEENCODERRkDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI
-                * kWheelDiameterMeters;
-        public static final double kTurningEncoderRot2Rad = kTurningMotorGearRatio * 2 * Math.PI;
+        public static final double kDriveEncoderRot2Meter = kDriveMotorGearRatio * Math.PI
+                        * kWheelDiameterMeters;
+        public static final double kTurningEncoderRot2Rad = KTurningMotorGearRatio * 2 * Math.PI;
+        // private static int kDriveEncoderRot2Meter;
         public static final double kDriveEncoderRPM2MeterPerSec = kDriveEncoderRot2Meter / 60;
         public static final double kTurningEncoderRPM2RadPerSec = kTurningEncoderRot2Rad / 60;
         public static final double kPTurning = 0.5;
-    }
-
-    public static final class DriveConstants {
-        private DriveConstants() {
-            // Private constructor to prevent instantiation
-        }
 
         public static final double kTrackWidth = Units.inchesToMeters(21);
         // Distance between right and left wheels
         public static final double kWheelBase = Units.inchesToMeters(25.5);
         // Distance between front and back wheels
         public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
-                new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
-                new Translation2d(kWheelBase / 2, kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
-                new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
+                        new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
+                        new Translation2d(kWheelBase / 2, kTrackWidth / 2),
+                        new Translation2d(-kWheelBase / 2, -kTrackWidth / 2),
+                        new Translation2d(-kWheelBase / 2, kTrackWidth / 2));
 
         public static final int blueDrive = 15;
         public static final int blueSteer = 10;
@@ -86,17 +76,9 @@ public class constants {
 
         public static final double kTeleDriveMaxSpeedMetersPerSecond = kPhysicalMaxSpeedMetersPerSecond / 4;
         public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = //
-                kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
+                        kPhysicalMaxAngularSpeedRadiansPerSecond / 4;
         public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
-    }
-
-    // would add auto constants here
-
-    public static final class OIConstants {
-        private OIConstants() {
-            // Private constructor to prevent instantiation
-        }
 
         public static final int kDriverControllerPort = 0;
 
@@ -106,5 +88,6 @@ public class constants {
         public static final int kDriverFieldOrientedButtonIdx = 1;
 
         public static final double kDeadband = 0.05;
-    }
+
+        public static final double OIConstants = 0.05;
 }

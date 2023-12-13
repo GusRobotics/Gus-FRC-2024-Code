@@ -1,5 +1,8 @@
 package frc.robot;
 
+//import com.kauailabs.navx.frc.AHRS;
+//import com.wpilibj.SPI;
+//import com.kauailabs.navx.frc.ARHS;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -10,50 +13,53 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.DriveConstants;
 
-public class SwerveSubsystem extends SubsystemBase {
+//import edu.wpi.first.wpilibj.interfaces;
+//import edu.wpi.first.wpilibj.interfaces;
+public class SwerveSubsystems extends SubsystemBase {
     private final SwerveModule blue = new SwerveModule(
-            constant.blueDrive,
-            constant.blueSteer,
-            constant.kBlueDriveEncoderReversed,
-            constant.kBlueTurningEncoderReversed,
-            constant.kBlueDriveAbsoluteEncoderPort,
-            constant.kBlueDriveAbsoluteEncoderOffsetRad,
-            constant.kBlueDriveAbsoluteEncoderReversed);
+            constants.blueDrive,
+            constants.blueSteer,
+            constants.kBlueDriveEncoderReversed,
+            constants.kBlueTurningEncoderReversed,
+            constants.kBlueDriveAbsoluteEncoderPort,
+            constants.kBlueDriveAbsoluteEncoderOffsetRad,
+            constants.kBlueDriveAbsoluteEncoderReversed);
 
     private final SwerveModule orange = new SwerveModule(
-            constant.orangeDrive,
-            constant.orangeSteer,
-            constant.kOrangeDriveEncoderReversed,
-            constant.kOrangeTurningEncoderReversed,
-            constant.kOrangeDriveAbsoluteEncoderPort,
-            constant.kOrangeDriveAbsoluteEncoderOffsetRad,
-            constant.kOrangeDriveAbsoluteEncoderReversed);
+            constants.orangeDrive,
+            constants.orangeSteer,
+            constants.kOrangeDriveEncoderReversed,
+            constants.kOrangeTurningEncoderReversed,
+            constants.kOrangeDriveAbsoluteEncoderPort,
+            constants.kOrangeDriveAbsoluteEncoderOffsetRad,
+            constants.kOrangeDriveAbsoluteEncoderReversed);
 
     private final SwerveModule green = new SwerveModule(
-            constant.greenDrive,
-            constant.greenSteer,
-            constant.kGreenDriveEncoderReversed,
-            constant.kGreenTurningEncoderReversed,
-            constant.kGreenDriveAbsoluteEncoderPort,
-            constant.kGreenDriveAbsoluteEncoderOffsetRad,
-            constant.kGreenDriveAbsoluteEncoderReversed);
+            constants.greenDrive,
+            constants.greenSteer,
+            constants.kGreenTurningEncoderReversed,
+            constants.kGreenTurningEncoderReversed,
+            constants.kGreenDriveAbsoluteEncoderPort,
+            constants.kGreenDriveAbsoluteEncoderOffsetRad,
+            constants.kGreenDriveAbsoluteEncoderReversed);
 
     private final SwerveModule red = new SwerveModule(
-            constant.redDrive,
-            constant.redSteer,
-            constant.kRedDriveEncoderReversed,
-            constant.kRedTurningEncoderReversed,
-            constant.kRedDriveAbsoluteEncoderPort,
-            constant.kRedDriveAbsoluteEncoderOffsetRad,
-            constant.kRedDriveAbsoluteEncoderReversed);
+            constants.redDrive,
+            constants.redSteer,
+            constants.kRedDriveEncoderReversed,
+            constants.kRedTurningEncoderReversed,
+            constants.kRedDriveAbsoluteEncoderPort,
+            constants.kRedDriveAbsoluteEncoderOffsetRad,
+            constants.kRedDriveAbsoluteEncoderReversed);
 
+    // private final AHRS gyro = new AHRS(SPI.Port.kMXP);
+    // private final AHRS gyro = new AHRS(SPI.Port.kMXP); // Uncommented
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);
-    private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(DriveConstants.kDriveKinematics,
-            new Rotation2d(0));
+    private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(constants.kDriveKinematics,
+            new Rotation2d(0), null);
 
-    public SwerveSubsystem() {
+    public SwerveSubsystems() {
         new Thread(() -> {
             try {
                 Thread.sleep(1000);
@@ -80,7 +86,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void resetOdometry(Pose2d pose) {
-        odometer.resetPosition(pose, getRotation2d());
+        odometer.resetPosition(getRotation2d(), null, pose);
     }
 
     @Override
@@ -99,7 +105,7 @@ public class SwerveSubsystem extends SubsystemBase {
     }
 
     public void setModuleStates(SwerveModuleState[] desiredStates) {
-        SwerveDriveKinematics.normalizeWheelSpeeds(desiredStates, DriveConstants.kPhysicalMaxSpeedMetersPerSecond);
+        SwerveDriveKinematics.desaturateWheelSpeeds(desiredStates, constants.kPhysicalMaxSpeedMetersPerSecond);
         blue.setDesiredState(desiredStates[0]);
         orange.setDesiredState(desiredStates[1]);
         green.setDesiredState(desiredStates[2]);
