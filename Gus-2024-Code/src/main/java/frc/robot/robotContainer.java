@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -54,8 +53,8 @@ public class RobotContainer {
                 public static final double kPThetaController = 0.5;
                 // idk what the controller constraints is calling??? looked for it in cosntants
                 // and its not there
-                public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
-                                2.0, 4.0);
+                // public static final TrapezoidProfile kThetaControllerConstraints = new
+                // TrapezoidProfile(2.0, 4.0);
                 // Other constants...
         }
 
