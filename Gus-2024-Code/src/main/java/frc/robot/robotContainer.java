@@ -2,6 +2,8 @@ package frc.robot;
 
 import java.util.List;
 
+//import com.ctre.phoenix.sensors.WPI_Pigeon2;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -27,11 +29,11 @@ public class RobotContainer {
         // private Trigger whenPressed;
 
         public RobotContainer() {
-                swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(swerveSubsystems,
-                                () -> -driverJoytick.getRawAxis(OIConstants.kDriverYAxis),
-                                () -> driverJoytick.getRawAxis(OIConstants.kDriverXAxis),
-                                () -> driverJoytick.getRawAxis(OIConstants.kDriverRotAxis),
-                                () -> !driverJoytick.getRawButton(OIConstants.kDriverFieldOrientedButtonIdx)));
+                swerveSubsystem.setDefaultCommand(new SwerveJoystickCmd(swerveSubsystem,
+                                () -> -driverJoytick.getRawAxis(constants.kDriverYAxis),
+                                () -> driverJoytick.getRawAxis(constants.kDriverXAxis),
+                                () -> driverJoytick.getRawAxis(constants.kDriverRotAxis),
+                                () -> !driverJoytick.getRawButton(constants.kDriverFieldOrientedButtonIdx)));
 
                 configureButtonBindings();
         }
@@ -75,10 +77,12 @@ public class RobotContainer {
                                 trajectoryConfig);
 
                 // 3. Define PID controllers for tracking trajectory
+                // resolving errors to build and properly install ctre api
+                // WPI_Pigeon2 pigeon = new WPI_Pigeon2(10);
                 PIDController xController = new PIDController(AutoConstants.kPXController, 0, 0);
                 PIDController yController = new PIDController(AutoConstants.kPYController, 0, 0);
                 ProfiledPIDController thetaController = new ProfiledPIDController(
-                                AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
+                                AutoConstants.kPThetaController, 0, 0, constants.kThetaControllerConstraints);
                 thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
                 // 4. Construct command to follow trajectory

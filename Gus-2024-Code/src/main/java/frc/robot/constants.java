@@ -2,7 +2,10 @@ package frc.robot;
 
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+//import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.util.Units;
+//import edu.wpi.first.wpilibj2.command.TrapezoidProfileCommand;
 
 public class constants {
         // I STOLE THESE CONSTANTS... CONFIRM ACCURACY!
@@ -56,7 +59,7 @@ public class constants {
         public static final boolean kOrangeDriveEncoderReversed = false;
         public static final boolean kRedDriveEncoderReversed = false;
 
-        public static final int kBlueDriveAbsoluteEncoderPort = 0;
+        public static final int kBlueDriveAbsoluteEncoderPort = 4;
         public static final int kGreenDriveAbsoluteEncoderPort = 2;
         public static final int kOrangeDriveAbsoluteEncoderPort = 1;
         public static final int kRedDriveAbsoluteEncoderPort = 3;
@@ -90,5 +93,7 @@ public class constants {
         public static final double kDeadband = 0.05;
 
         public static final double OIConstants = 0.05;
-
+        public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
+                        kPhysicalMaxSpeedMetersPerSecond, kPhysicalMaxAngularSpeedRadiansPerSecond);
+        TrapezoidProfile.State previousProfiledReference = new TrapezoidProfile.State();
 }

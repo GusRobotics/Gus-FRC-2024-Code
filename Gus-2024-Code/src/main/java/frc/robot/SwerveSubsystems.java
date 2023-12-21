@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -89,10 +90,11 @@ public class SwerveSubsystems extends SubsystemBase {
         odometer.resetPosition(getRotation2d(), null, pose);
     }
 
+    SwerveModulePosition[] driveStates = { blue.getState(), orange.getState(), green.getState(), red.getState() };
+
     @Override
     public void periodic() {
-        odometer.update(getRotation2d(), blue.getState(), orange.getState(), green.getState(),
-                red.getState());
+        odometer.update(getRotation2d(), driveStates);
         SmartDashboard.putNumber("Robot Heading", getHeading());
         SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     }
