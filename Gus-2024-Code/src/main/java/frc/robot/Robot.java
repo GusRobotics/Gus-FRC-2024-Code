@@ -4,12 +4,15 @@
 
 package frc.robot;
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+//import com.revrobotics.CANSparkMax;
+//import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-
+//import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to
@@ -22,17 +25,53 @@ import edu.wpi.first.wpilibj.XboxController;
 public class Robot extends TimedRobot {
   XboxController baseController = new XboxController(0);
 
-  CANSparkMax orangeDriveMotor = new CANSparkMax(36, MotorType.kBrushless);
-  CANSparkMax orangeTurningMotor = new CANSparkMax(7, MotorType.kBrushless);
+  // CANSparkMax orangeDriveMotor = new CANSparkMax(36, MotorType.kBrushless);
+  // CANSparkMax orangeTurningMotor = new CANSparkMax(7, MotorType.kBrushless);
 
-  CANSparkMax redDriveMotor = new CANSparkMax(4, MotorType.kBrushless);
-  CANSparkMax redTurningMotor = new CANSparkMax(9, MotorType.kBrushless);
+  // CANSparkMax redDriveMotor = new CANSparkMax(4, MotorType.kBrushless);
+  // CANSparkMax redTurningMotor = new CANSparkMax(9, MotorType.kBrushless);
 
-  CANSparkMax blueDriveMotor = new CANSparkMax(15, MotorType.kBrushless);
-  CANSparkMax blueTurningMotor = new CANSparkMax(10, MotorType.kBrushless);
+  // CANSparkMax blueDriveMotor = new CANSparkMax(15, MotorType.kBrushless);
+  // CANSparkMax blueTurningMotor = new CANSparkMax(10, MotorType.kBrushless);
 
-  CANSparkMax greenDriveMotor = new CANSparkMax(13, MotorType.kBrushless);
-  CANSparkMax greenTurningMotor = new CANSparkMax(14, MotorType.kBrushless);
+  // CANSparkMax greenDriveMotor = new CANSparkMax(13, MotorType.kBrushless);
+  // CANSparkMax greenTurningMotor = new CANSparkMax(14, MotorType.kBrushless);
+
+  private final SwerveModule blue = new SwerveModule(
+            constants.blueDrive,
+            constants.blueSteer,
+            constants.kBlueDriveEncoderReversed,
+            constants.kBlueTurningEncoderReversed,
+            constants.kBlueDriveAbsoluteEncoderPort,
+            constants.kBlueDriveAbsoluteEncoderOffsetRad,
+            constants.kBlueDriveAbsoluteEncoderReversed);
+
+    private final SwerveModule orange = new SwerveModule(
+            constants.orangeDrive,
+            constants.orangeSteer,
+            constants.kOrangeDriveEncoderReversed,
+            constants.kOrangeTurningEncoderReversed,
+            constants.kOrangeDriveAbsoluteEncoderPort,
+            constants.kOrangeDriveAbsoluteEncoderOffsetRad,
+            constants.kOrangeDriveAbsoluteEncoderReversed);
+
+    private final SwerveModule green = new SwerveModule(
+            constants.greenDrive,
+            constants.greenSteer,
+            constants.kGreenTurningEncoderReversed,
+            constants.kGreenTurningEncoderReversed,
+            constants.kGreenDriveAbsoluteEncoderPort,
+            constants.kGreenDriveAbsoluteEncoderOffsetRad,
+            constants.kGreenDriveAbsoluteEncoderReversed);
+
+    private final SwerveModule red = new SwerveModule(
+            constants.redDrive,
+            constants.redSteer,
+            constants.kRedDriveEncoderReversed,
+            constants.kRedTurningEncoderReversed,
+            constants.kRedDriveAbsoluteEncoderPort,
+            constants.kRedDriveAbsoluteEncoderOffsetRad,
+            constants.kRedDriveAbsoluteEncoderReversed);
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -78,10 +117,25 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     // m_robotDrive.arcadeDrive(m_stick.getY(), m_stick.getX());
-    orangeDriveMotor.set(baseController.getLeftY() / 2);
-    greenDriveMotor.set(baseController.getLeftY() / 2);
-    redDriveMotor.set(baseController.getLeftY() / 2);
-    blueDriveMotor.set(baseController.getLeftY() / 2);
+    // orangeDriveMotor.set(baseController.getLeftY() / 2);
+    // greenDriveMotor.set(baseController.getLeftY() / 2);
+    // redDriveMotor.set(baseController.getLeftY() / 2);
+    // blueDriveMotor.set(baseController.getLeftY() / 2);
+    Rotation2d desRot = new Rotation2d(0);
+    SwerveModuleState desiredState = new SwerveModuleState(baseController.getLeftY(), desRot);
+    blue.setDesiredState(desiredState);
+    orange.setDesiredState(desiredState);
+    green.setDesiredState(desiredState);
+    red.setDesiredState(desiredState);
+    SmartDashboard.putNumber("Red Hall", red.getTurningPosition());
+    SmartDashboard.putNumber("Blue Hall", blue.getTurningPosition());
+    SmartDashboard.putNumber("Green Hall", green.getTurningPosition());
+    SmartDashboard.putNumber("Orange Hall", orange.getTurningPosition());
+    SmartDashboard.putNumber("Red Abs", red.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Blue ABS", blue.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Green ABS", green.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Orange ABS", orange.getAbsoluteEncoderRad());
+
   }
 
   /** This function is called once each time the robot enters test mode. */
@@ -92,5 +146,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
+    SmartDashboard.putNumber("Red Hall", red.getTurningPosition());
+    SmartDashboard.putNumber("Blue Hall", blue.getTurningPosition());
+    SmartDashboard.putNumber("Green Hall", green.getTurningPosition());
+    SmartDashboard.putNumber("Orange Hall", orange.getTurningPosition());
+    SmartDashboard.putNumber("Red Abs", red.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Blue ABS", blue.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Green ABS", green.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Orange ABS", orange.getAbsoluteEncoderRad());
+
   }
 }
