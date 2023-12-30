@@ -116,26 +116,25 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
-    // m_robotDrive.arcadeDrive(m_stick.getY(), m_stick.getX());
-    // orangeDriveMotor.set(baseController.getLeftY() / 2);
-    // greenDriveMotor.set(baseController.getLeftY() / 2);
-    // redDriveMotor.set(baseController.getLeftY() / 2);
-    // blueDriveMotor.set(baseController.getLeftY() / 2);
+
     Rotation2d desRot = new Rotation2d(0);
     SwerveModuleState desiredState = new SwerveModuleState(baseController.getLeftY(), desRot);
+    blue.resetEncoders();
+    orange.resetEncoders();
+    red.resetEncoders();
+    green.resetEncoders();
+
     blue.setDesiredState(desiredState);
     orange.setDesiredState(desiredState);
     green.setDesiredState(desiredState);
     red.setDesiredState(desiredState);
+
     SmartDashboard.putNumber("Red Hall", red.getTurningPosition());
     SmartDashboard.putNumber("Blue Hall", blue.getTurningPosition());
     SmartDashboard.putNumber("Green Hall", green.getTurningPosition());
     SmartDashboard.putNumber("Orange Hall", orange.getTurningPosition());
-    SmartDashboard.putNumber("Red Abs", red.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("Blue ABS", blue.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("Green ABS", green.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("Orange ABS", orange.getAbsoluteEncoderRad());
 
+    
   }
 
   /** This function is called once each time the robot enters test mode. */
@@ -154,6 +153,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Blue ABS", blue.getAbsoluteEncoderRad());
     SmartDashboard.putNumber("Green ABS", green.getAbsoluteEncoderRad());
     SmartDashboard.putNumber("Orange ABS", orange.getAbsoluteEncoderRad());
-
+    SmartDashboard.putNumber("sanity", 5);
   }
 }
