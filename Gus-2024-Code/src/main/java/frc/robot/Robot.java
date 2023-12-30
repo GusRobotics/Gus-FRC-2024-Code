@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
   XboxController baseController = new XboxController(0);
-
+  Rotation2d desRot = new Rotation2d(0);
   // CANSparkMax orangeDriveMotor = new CANSparkMax(36, MotorType.kBrushless);
   // CANSparkMax orangeTurningMotor = new CANSparkMax(7, MotorType.kBrushless);
 
@@ -111,18 +111,24 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void teleopInit() {
+
   }
 
   /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
+    if(Math.pow(baseController.getRightX(), 2) + Math.pow(baseController.getRightX(), 2) >= 0.5){
+      if(baseController.getRightX() > 0){
+        desRot = new Rotation2d(Math.atan(baseController.getRightY()/baseController.getRightX()));
+      }
+      else{
+        desRot = new Rotation2d(Math.PI - Math.atan(baseController.getRightY()/baseController.getRightX()));
+      }
+    }
 
-    Rotation2d desRot = new Rotation2d(0);
     SwerveModuleState desiredState = new SwerveModuleState(baseController.getLeftY(), desRot);
-    blue.resetEncoders();
-    orange.resetEncoders();
-    red.resetEncoders();
-    green.resetEncoders();
+
+  
 
     blue.setDesiredState(desiredState);
     orange.setDesiredState(desiredState);
@@ -133,8 +139,12 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Blue Hall", blue.getTurningPosition());
     SmartDashboard.putNumber("Green Hall", green.getTurningPosition());
     SmartDashboard.putNumber("Orange Hall", orange.getTurningPosition());
-
-    
+    SmartDashboard.putNumber("Red Abs", red.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Blue ABS", blue.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Green ABS", green.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("Orange ABS", orange.getAbsoluteEncoderRad());
+    SmartDashboard.putNumber("sanity", 5);
+    SmartDashboard.putNumber("Desired Rotation", Math.atan(baseController.getRightY()/baseController.getRightX())/(Math.PI *2));
   }
 
   /** This function is called once each time the robot enters test mode. */
