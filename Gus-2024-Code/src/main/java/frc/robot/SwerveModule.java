@@ -8,7 +8,7 @@ import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
+//import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.RobotController;
@@ -34,7 +34,7 @@ public class SwerveModule {
 
 
     public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed,
-            int absoluteEncoderId, double absoluteEncoderOffset, boolean absoluteEncoderReversed) {
+            int absoluteEncoderId, double absoluteEncoderOffset, boolean absoluteEncoderReversed, boolean reversedDrive, boolean reversedTurn) {
 
         this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
         this.absoluteEncoderReversed = absoluteEncoderReversed;
@@ -62,6 +62,9 @@ public class SwerveModule {
 
         driveMotor.setSmartCurrentLimit(constants.driveMotorCurrentLimit);
         turningMotor.setSmartCurrentLimit(constants.driveMotorCurrentLimit);
+            
+        driveMotor.setInverted(reversedDrive);
+        turningMotor.setInverted(reversedTurn);
 
         resetEncoders();
     }
@@ -103,8 +106,9 @@ public class SwerveModule {
         turningEncoder.setPosition(0);
     }
 
-    public SwerveModulePosition getState() {
-        return new SwerveModulePosition(getDriveVelocity(), new Rotation2d(getTurningPosition()));
+    //switched from return type swervemoduleposition to swervemodulestate for functionality
+    public SwerveModuleState getState() {
+        return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));
     }
 
     public void setDesiredState(SwerveModuleState state) {

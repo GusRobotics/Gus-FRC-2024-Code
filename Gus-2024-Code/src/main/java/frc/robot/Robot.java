@@ -4,12 +4,12 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
-//import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import edu.wpi.first.math.kinematics.SwerveModulePosition;
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to
@@ -35,41 +35,44 @@ public class Robot extends TimedRobot {
   // CANSparkMax greenDriveMotor = new CANSparkMax(13, MotorType.kBrushless);
   // CANSparkMax greenTurningMotor = new CANSparkMax(14, MotorType.kBrushless);
 
-  private final SwerveModule blue = new SwerveModule(
-            constants.blueDrive,
-            constants.blueSteer,
-            constants.kBlueDriveEncoderReversed,
-            constants.kBlueTurningEncoderReversed,
-            constants.kBlueDriveAbsoluteEncoderPort,
-            constants.kBlueDriveAbsoluteEncoderOffsetRad,
-            constants.kBlueDriveAbsoluteEncoderReversed);
+  // private final SwerveModule blue = new SwerveModule(
+  //           constants.blueDrive,
+  //           constants.blueSteer,
+  //           constants.kBlueDriveEncoderReversed,
+  //           constants.kBlueTurningEncoderReversed,
+  //           constants.kBlueDriveAbsoluteEncoderPort,
+  //           constants.kBlueDriveAbsoluteEncoderOffsetRad,
+  //           constants.kBlueDriveAbsoluteEncoderReversed);
 
-    private final SwerveModule orange = new SwerveModule(
-            constants.orangeDrive,
-            constants.orangeSteer,
-            constants.kOrangeDriveEncoderReversed,
-            constants.kOrangeTurningEncoderReversed,
-            constants.kOrangeDriveAbsoluteEncoderPort,
-            constants.kOrangeDriveAbsoluteEncoderOffsetRad,
-            constants.kOrangeDriveAbsoluteEncoderReversed);
+  //   private final SwerveModule orange = new SwerveModule(
+  //           constants.orangeDrive,
+  //           constants.orangeSteer,
+  //           constants.kOrangeDriveEncoderReversed,
+  //           constants.kOrangeTurningEncoderReversed,
+  //           constants.kOrangeDriveAbsoluteEncoderPort,
+  //           constants.kOrangeDriveAbsoluteEncoderOffsetRad,
+  //           constants.kOrangeDriveAbsoluteEncoderReversed);
 
-    private final SwerveModule green = new SwerveModule(
-            constants.greenDrive,
-            constants.greenSteer,
-            constants.kGreenTurningEncoderReversed,
-            constants.kGreenTurningEncoderReversed,
-            constants.kGreenDriveAbsoluteEncoderPort,
-            constants.kGreenDriveAbsoluteEncoderOffsetRad,
-            constants.kGreenDriveAbsoluteEncoderReversed);
+  //   private final SwerveModule green = new SwerveModule(
+  //           constants.greenDrive,
+  //           constants.greenSteer,
+  //           constants.kGreenTurningEncoderReversed,
+  //           constants.kGreenTurningEncoderReversed,
+  //           constants.kGreenDriveAbsoluteEncoderPort,
+  //           constants.kGreenDriveAbsoluteEncoderOffsetRad,
+  //           constants.kGreenDriveAbsoluteEncoderReversed);
 
-    private final SwerveModule red = new SwerveModule(
-            constants.redDrive,
-            constants.redSteer,
-            constants.kRedDriveEncoderReversed,
-            constants.kRedTurningEncoderReversed,
-            constants.kRedDriveAbsoluteEncoderPort,
-            constants.kRedDriveAbsoluteEncoderOffsetRad,
-            constants.kRedDriveAbsoluteEncoderReversed);
+  //   private final SwerveModule red = new SwerveModule(
+  //           constants.redDrive,
+  //           constants.redSteer,
+  //           constants.kRedDriveEncoderReversed,
+  //           constants.kRedTurningEncoderReversed,
+  //           constants.kRedDriveAbsoluteEncoderPort,
+  //           constants.kRedDriveAbsoluteEncoderOffsetRad,
+  //           constants.kRedDriveAbsoluteEncoderReversed);
+
+  SwerveDrive driveBase = new SwerveDrive();
+  SwerveModuleState driveStates[] = new SwerveModuleState[4];
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -103,7 +106,7 @@ public class Robot extends TimedRobot {
     // m_robotDrive.stopMotor(); // stop robot
     // }
   }
-
+//GREEN AND ORANGE NEED REVERSING
   /**
    * This function is called once each time the robot enters teleoperated mode.
    */
@@ -124,23 +127,17 @@ public class Robot extends TimedRobot {
       }
     }
 
-    SwerveModuleState desiredState = new SwerveModuleState(baseController.getLeftY(), desRot);
+    SwerveModuleState desiredState = new SwerveModuleState(baseController.getLeftY()*2, desRot);
 
-    blue.setDesiredState(desiredState);
-    orange.setDesiredState(desiredState);
-    green.setDesiredState(desiredState);
-    red.setDesiredState(desiredState);
+    driveStates[0] = desiredState; 
+    driveStates[1] = desiredState;
+    driveStates[2] = desiredState;
+    driveStates[3] = desiredState;
+    driveBase.setModuleStates(driveStates);
 
-    SmartDashboard.putNumber("Red Hall", red.getTurningPosition());
-    SmartDashboard.putNumber("Blue Hall", blue.getTurningPosition());
-    SmartDashboard.putNumber("Green Hall", green.getTurningPosition());
-    SmartDashboard.putNumber("Orange Hall", orange.getTurningPosition());
-    SmartDashboard.putNumber("Red Abs", red.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("Blue ABS", blue.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("Green ABS", green.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("Orange ABS", orange.getAbsoluteEncoderRad());
     SmartDashboard.putNumber("sanity", 5);
     SmartDashboard.putNumber("Desired Rotation", Math.atan(baseController.getRightY()/baseController.getRightX())/(Math.PI *2));
+    driveBase.periodic();
   }
 
   /** This function is called once each time the robot enters test mode. */
@@ -151,14 +148,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    SmartDashboard.putNumber("Red Hall", red.getTurningPosition());
-    SmartDashboard.putNumber("Blue Hall", blue.getTurningPosition());
-    SmartDashboard.putNumber("Green Hall", green.getTurningPosition());
-    SmartDashboard.putNumber("Orange Hall", orange.getTurningPosition());
-    SmartDashboard.putNumber("Red Abs", red.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("Blue ABS", blue.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("Green ABS", green.getAbsoluteEncoderRad());
-    SmartDashboard.putNumber("Orange ABS", orange.getAbsoluteEncoderRad());
+    driveBase.periodic();
     SmartDashboard.putNumber("sanity", 5);
   }
 }

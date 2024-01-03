@@ -8,8 +8,8 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
+//import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+//import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,14 +21,14 @@ public class SwerveDrive extends SubsystemBase {
     // private final AHRS gyro = new AHRS(SPI.Port.kMXP);
     // private final AHRS gyro = new AHRS(SPI.Port.kMXP); // Uncommented
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);
-    private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(constants.kDriveKinematics,
-            new Rotation2d(0), null);
+    //private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(constants.kDriveKinematics,
+            //new Rotation2d(0), null);
     private final SwerveModule blue;
     private final SwerveModule red;
     private final SwerveModule green;
     private final SwerveModule orange;
 
-    SwerveModulePosition driveStates[] = new SwerveModulePosition[4];
+    SwerveModuleState driveStates[] = new SwerveModuleState[4];
 
     public SwerveDrive() {
         blue = new SwerveModule(
@@ -38,7 +38,8 @@ public class SwerveDrive extends SubsystemBase {
             constants.kBlueTurningEncoderReversed,
             constants.kBlueDriveAbsoluteEncoderPort,
             constants.kBlueDriveAbsoluteEncoderOffsetRad,
-            constants.kBlueDriveAbsoluteEncoderReversed);
+            constants.kBlueDriveAbsoluteEncoderReversed,
+            false, false);
 
         orange = new SwerveModule(
             constants.orangeDrive,
@@ -47,7 +48,8 @@ public class SwerveDrive extends SubsystemBase {
             constants.kOrangeTurningEncoderReversed,
             constants.kOrangeDriveAbsoluteEncoderPort,
             constants.kOrangeDriveAbsoluteEncoderOffsetRad,
-            constants.kOrangeDriveAbsoluteEncoderReversed);
+            constants.kOrangeDriveAbsoluteEncoderReversed,
+            true, false);
 
         green = new SwerveModule(
             constants.greenDrive,
@@ -56,7 +58,8 @@ public class SwerveDrive extends SubsystemBase {
             constants.kGreenTurningEncoderReversed,
             constants.kGreenDriveAbsoluteEncoderPort,
             constants.kGreenDriveAbsoluteEncoderOffsetRad,
-            constants.kGreenDriveAbsoluteEncoderReversed);
+            constants.kGreenDriveAbsoluteEncoderReversed,
+            true, false);
 
         red = new SwerveModule(
             constants.redDrive,
@@ -65,7 +68,8 @@ public class SwerveDrive extends SubsystemBase {
             constants.kRedTurningEncoderReversed,
             constants.kRedDriveAbsoluteEncoderPort,
             constants.kRedDriveAbsoluteEncoderOffsetRad,
-            constants.kRedDriveAbsoluteEncoderReversed);
+            constants.kRedDriveAbsoluteEncoderReversed,
+            true, false);
 
         driveStates[0] = blue.getState(); 
         driveStates[1] = orange.getState();
@@ -85,19 +89,20 @@ public class SwerveDrive extends SubsystemBase {
         return Rotation2d.fromDegrees(getHeading());
     }
 
-    public Pose2d getPose() {
-        return odometer.getPoseMeters();
-    }
+    // public Pose2d getPose() {
+    //     return odometer.getPoseMeters();
+    // }
 
     public void resetOdometry(Pose2d pose) {
-        odometer.resetPosition(getRotation2d(), null, pose);
+        //odometer.resetPosition(getRotation2d(), null, pose);
     }
 
     @Override
     public void periodic() {
-        odometer.update(getRotation2d(), driveStates);
+        //note odometry settings commented out bc of swervedrivestate and swervedriveposition
+        //odometer.update(getRotation2d(), driveStates);
         SmartDashboard.putNumber("Robot Heading", getHeading());
-        SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
+        //SmartDashboard.putString("Robot Location", getPose().getTranslation().toString());
     }
 
     public void stopModules() {
