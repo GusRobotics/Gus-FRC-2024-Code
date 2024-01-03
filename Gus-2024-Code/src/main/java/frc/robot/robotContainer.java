@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class RobotContainer {
-        private final SwerveSubsystems swerveSubsystem = new SwerveSubsystems();
+        private final SwerveDrive swerveSubsystem = new SwerveDrive();
 
         private Joystick driverJoytick = new Joystick(constants.kDriverControllerPort);
 
