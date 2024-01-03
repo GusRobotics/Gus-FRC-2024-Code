@@ -4,9 +4,6 @@
 
 package frc.robot;
 
-//import com.revrobotics.CANSparkMax;
-//import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -25,6 +22,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
   XboxController baseController = new XboxController(0);
   Rotation2d desRot = new Rotation2d(0);
+
   // CANSparkMax orangeDriveMotor = new CANSparkMax(36, MotorType.kBrushless);
   // CANSparkMax orangeTurningMotor = new CANSparkMax(7, MotorType.kBrushless);
 
@@ -127,8 +125,6 @@ public class Robot extends TimedRobot {
     }
 
     SwerveModuleState desiredState = new SwerveModuleState(baseController.getLeftY(), desRot);
-
-  
 
     blue.setDesiredState(desiredState);
     orange.setDesiredState(desiredState);

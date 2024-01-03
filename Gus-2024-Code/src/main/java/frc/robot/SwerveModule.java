@@ -60,12 +60,23 @@ public class SwerveModule {
         turningPidController = new PIDController(constants.kPTurning, 0, 0);
         turningPidController.enableContinuousInput(-Math.PI, Math.PI);
 
+        driveMotor.setSmartCurrentLimit(constants.driveMotorCurrentLimit);
+        turningMotor.setSmartCurrentLimit(constants.driveMotorCurrentLimit);
+
         resetEncoders();
     }
 
     public double getDrivePosition() {
         return driveEncoder.getPosition();
     }
+
+    // public CANSparkMax getDriveMotor(int driveId) {
+    //     return new CANSparkMax(driveId, MotorType.kBrushless);
+    // }
+
+    // public CANSparkMax getSteeringMotor(int steerId) {
+    //     return new CANSparkMax(steerId, MotorType.kBrushless);
+    // }
 
     public double getTurningPosition() {
         return (turningEncoder.getPosition()*(1.0/(150.0/7.0)))*Math.PI*2;
