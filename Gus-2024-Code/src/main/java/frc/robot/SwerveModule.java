@@ -10,13 +10,14 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 //import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.RobotController;
+// import edu.wpi.first.wpilibj.AnalogInput;
+// import edu.wpi.first.wpilibj.RobotController;
 //import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
 //import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import com.ctre.phoenix.sensors.WPI_Pigeon2;
-//import com.ctre.phoenix6.hardware.CANcoder;
+//import com.ctre.phoenix.sensors.WPI_CANCoder;
 //import edu.wpi.first.wpilibj.XboxController;
+import com.ctre.phoenix6.hardware.CANcoder;
 
 public class SwerveModule {
 
@@ -28,19 +29,19 @@ public class SwerveModule {
 
     private final PIDController turningPidController;
 
-    private final AnalogInput absoluteEncoder;
-    private final boolean absoluteEncoderReversed;
-    private final double absoluteEncoderOffsetRad;
+    private final CANcoder absoluteEncoder;
+    //private final boolean absoluteEncoderReversed;
+    //private final double absoluteEncoderOffsetRad;
 
 
     public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed,
             int absoluteEncoderId, double absoluteEncoderOffset, boolean absoluteEncoderReversed, boolean reversedDrive, boolean reversedTurn) {
 
-        this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
-        this.absoluteEncoderReversed = absoluteEncoderReversed;
+        // this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
+        // this.absoluteEncoderReversed = absoluteEncoderReversed;
         //swtiched AbsoluteEncoder to type CANcoder --> broke the getVoltage() and getChannel() methods
-        //absoluteEncoder = new CANcoder(absoluteEncoderId);
-        absoluteEncoder = new AnalogInput(absoluteEncoderId);
+        absoluteEncoder = new CANcoder(absoluteEncoderId);
+        //absoluteEncoder = new AnalogInput(absoluteEncoderId);
 
         driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
         turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
@@ -94,11 +95,12 @@ public class SwerveModule {
     }
 
     public double getAbsoluteEncoderRad() {
-        double angle = absoluteEncoder.getVoltage() / RobotController.getVoltage5V();
-        angle *= 2.0 * Math.PI;
-        angle -= absoluteEncoderOffsetRad;
-        //return angle;
-        return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
+        // double angle = absoluteEncoder.getVoltage() / RobotController.getVoltage5V();
+        // angle *= 2.0 * Math.PI;
+        // angle -= absoluteEncoderOffsetRad;
+        // //return angle;
+        // return angle * (absoluteEncoderReversed ? -1.0 : 1.0);
+        return absoluteEncoder.getAbsolutePosition().getValue();
     }
 
     public void resetEncoders() {

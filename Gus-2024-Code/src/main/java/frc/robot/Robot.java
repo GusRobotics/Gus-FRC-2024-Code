@@ -10,6 +10,12 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 //import edu.wpi.first.math.kinematics.SwerveModulePosition;
+
+//FOR THE FIRST MEETING AFTER KICKOFF:: 
+  //write method to read the cancoder values in SwerveDrive, use in robotinit to display to smartdashboard, 
+  //callibrate values for cancodes for each of the modules somehow (idk average?) find reset values in test, 
+  //set that value as an automatic reset in robotinit
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to
@@ -23,56 +29,9 @@ public class Robot extends TimedRobot {
   XboxController baseController = new XboxController(0);
   Rotation2d desRot = new Rotation2d(0);
 
-  // CANSparkMax orangeDriveMotor = new CANSparkMax(36, MotorType.kBrushless);
-  // CANSparkMax orangeTurningMotor = new CANSparkMax(7, MotorType.kBrushless);
-
-  // CANSparkMax redDriveMotor = new CANSparkMax(4, MotorType.kBrushless);
-  // CANSparkMax redTurningMotor = new CANSparkMax(9, MotorType.kBrushless);
-
-  // CANSparkMax blueDriveMotor = new CANSparkMax(15, MotorType.kBrushless);
-  // CANSparkMax blueTurningMotor = new CANSparkMax(10, MotorType.kBrushless);
-
-  // CANSparkMax greenDriveMotor = new CANSparkMax(13, MotorType.kBrushless);
-  // CANSparkMax greenTurningMotor = new CANSparkMax(14, MotorType.kBrushless);
-
-  // private final SwerveModule blue = new SwerveModule(
-  //           constants.blueDrive,
-  //           constants.blueSteer,
-  //           constants.kBlueDriveEncoderReversed,
-  //           constants.kBlueTurningEncoderReversed,
-  //           constants.kBlueDriveAbsoluteEncoderPort,
-  //           constants.kBlueDriveAbsoluteEncoderOffsetRad,
-  //           constants.kBlueDriveAbsoluteEncoderReversed);
-
-  //   private final SwerveModule orange = new SwerveModule(
-  //           constants.orangeDrive,
-  //           constants.orangeSteer,
-  //           constants.kOrangeDriveEncoderReversed,
-  //           constants.kOrangeTurningEncoderReversed,
-  //           constants.kOrangeDriveAbsoluteEncoderPort,
-  //           constants.kOrangeDriveAbsoluteEncoderOffsetRad,
-  //           constants.kOrangeDriveAbsoluteEncoderReversed);
-
-  //   private final SwerveModule green = new SwerveModule(
-  //           constants.greenDrive,
-  //           constants.greenSteer,
-  //           constants.kGreenTurningEncoderReversed,
-  //           constants.kGreenTurningEncoderReversed,
-  //           constants.kGreenDriveAbsoluteEncoderPort,
-  //           constants.kGreenDriveAbsoluteEncoderOffsetRad,
-  //           constants.kGreenDriveAbsoluteEncoderReversed);
-
-  //   private final SwerveModule red = new SwerveModule(
-  //           constants.redDrive,
-  //           constants.redSteer,
-  //           constants.kRedDriveEncoderReversed,
-  //           constants.kRedTurningEncoderReversed,
-  //           constants.kRedDriveAbsoluteEncoderPort,
-  //           constants.kRedDriveAbsoluteEncoderOffsetRad,
-  //           constants.kRedDriveAbsoluteEncoderReversed);
-
   SwerveDrive driveBase = new SwerveDrive();
   SwerveModuleState driveStates[] = new SwerveModuleState[4];
+
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -84,8 +43,7 @@ public class Robot extends TimedRobot {
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
-    // orange.setInverted(true);
-    // red.setInverted(true);
+
 
   }
 
@@ -138,6 +96,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("sanity", 5);
     SmartDashboard.putNumber("Desired Rotation", Math.atan(baseController.getRightY()/baseController.getRightX())/(Math.PI *2));
     driveBase.periodic();
+
   }
 
   /** This function is called once each time the robot enters test mode. */
