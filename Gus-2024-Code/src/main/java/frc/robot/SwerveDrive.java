@@ -1,25 +1,20 @@
 package frc.robot;
 
-//import com.kauailabs.navx.frc.AHRS;
-//import com.wpilibj.SPI;
-//import com.kauailabs.navx.frc.ARHS;
 import com.kauailabs.navx.frc.AHRS;
 
-import edu.wpi.first.math.geometry.Pose2d;
+//import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 //import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
-//import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+//import edu.wpi.first.wpilibj.interfaces;
+//import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
-//import edu.wpi.first.wpilibj.interfaces;
-//import edu.wpi.first.wpilibj.interfaces;
 public class SwerveDrive extends SubsystemBase {
-    // private final AHRS gyro = new AHRS(SPI.Port.kMXP);
-    // private final AHRS gyro = new AHRS(SPI.Port.kMXP); // Uncommented
+
     private final AHRS gyro = new AHRS(SPI.Port.kMXP);
     //private final SwerveDriveOdometry odometer = new SwerveDriveOdometry(constants.kDriveKinematics,
             //new Rotation2d(0), null);
@@ -28,6 +23,7 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveModule green;
     private final SwerveModule orange;
 
+    //toggling between SwerveModelState and SwerveModelPosition, attempting to debug odometer
     SwerveModuleState driveStates[] = new SwerveModuleState[4];
 
     public SwerveDrive() {
@@ -39,7 +35,8 @@ public class SwerveDrive extends SubsystemBase {
             constants.kBlueDriveAbsoluteEncoderPort,
             constants.kBlueDriveAbsoluteEncoderOffsetRad,
             constants.kBlueDriveAbsoluteEncoderReversed,
-            false, false);
+            constants.blueDriveInvert, 
+            constants.blueTurnInvert);
 
         orange = new SwerveModule(
             constants.orangeDrive,
@@ -49,7 +46,8 @@ public class SwerveDrive extends SubsystemBase {
             constants.kOrangeDriveAbsoluteEncoderPort,
             constants.kOrangeDriveAbsoluteEncoderOffsetRad,
             constants.kOrangeDriveAbsoluteEncoderReversed,
-            true, false);
+            constants.orangeDriveInvert, 
+            constants.orangeTurnInvert);
 
         green = new SwerveModule(
             constants.greenDrive,
@@ -59,7 +57,8 @@ public class SwerveDrive extends SubsystemBase {
             constants.kGreenDriveAbsoluteEncoderPort,
             constants.kGreenDriveAbsoluteEncoderOffsetRad,
             constants.kGreenDriveAbsoluteEncoderReversed,
-            true, false);
+            constants.greenDriveInvert, 
+            constants.greenTurnInvert);
 
         red = new SwerveModule(
             constants.redDrive,
@@ -69,12 +68,14 @@ public class SwerveDrive extends SubsystemBase {
             constants.kRedDriveAbsoluteEncoderPort,
             constants.kRedDriveAbsoluteEncoderOffsetRad,
             constants.kRedDriveAbsoluteEncoderReversed,
-            true, false);
+            constants.redDriveInvert, 
+            constants.redTurnInvert);
 
         driveStates[0] = blue.getState(); 
         driveStates[1] = orange.getState();
         driveStates[2] = red.getState();
         driveStates[3] = green.getState();
+
     }
 
     public void zeroHeading() {
@@ -93,9 +94,9 @@ public class SwerveDrive extends SubsystemBase {
     //     return odometer.getPoseMeters();
     // }
 
-    public void resetOdometry(Pose2d pose) {
-        //odometer.resetPosition(getRotation2d(), null, pose);
-    }
+    // public void resetOdometry(Pose2d pose) {
+    //     odometer.resetPosition(getRotation2d(), null, pose);
+    // }
 
     @Override
     public void periodic() {
@@ -119,4 +120,6 @@ public class SwerveDrive extends SubsystemBase {
         green.setDesiredState(desiredStates[2]);
         red.setDesiredState(desiredStates[3]);
     }
+
+    //public void 
 }

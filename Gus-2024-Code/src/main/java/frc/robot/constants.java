@@ -92,6 +92,15 @@ public class constants {
         public static final int kDriverRotAxis = 4;
         public static final int kDriverFieldOrientedButtonIdx = 1;
 
+        public static final boolean blueDriveInvert = true;
+        public static final boolean blueTurnInvert = false;
+        public static final boolean redDriveInvert = true;
+        public static final boolean redTurnInvert = false;
+        public static final boolean orangeDriveInvert = true;
+        public static final boolean orangeTurnInvert = false;
+        public static final boolean greenDriveInvert = true;
+        public static final boolean greenTurnInvert = false;
+
         public static final double kDeadband = 0.05;
 
         public static final double OIConstants = 0.05;
