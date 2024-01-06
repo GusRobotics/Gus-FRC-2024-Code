@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you 9 modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -9,6 +5,8 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.ctre.phoenix6.hardware.CANcoder;
 //import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 //FOR THE FIRST MEETING AFTER KICKOFF:: 
@@ -32,6 +30,11 @@ public class Robot extends TimedRobot {
   SwerveDrive driveBase = new SwerveDrive();
   SwerveModuleState driveStates[] = new SwerveModuleState[4];
 
+  CANcoder blue = new CANcoder(3);
+  CANcoder orange = new CANcoder(1);
+  CANcoder green = new CANcoder(5);
+  CANcoder red = new CANcoder(2);
+
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -40,10 +43,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // We need to invert one side of the drivetrain so that positive voltages
-    // result in both sides moving forward. Depending on how your robot's
-    // gearbox is constructed, you might have to invert the left side instead.
-
 
   }
 
@@ -64,7 +63,7 @@ public class Robot extends TimedRobot {
     // m_robotDrive.stopMotor(); // stop robot
     // }
   }
-//GREEN AND ORANGE NEED REVERSING
+
   /**
    * This function is called once each time the robot enters teleoperated mode.
    */
@@ -76,6 +75,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
+    //apply deadband once the code is written
     if(Math.pow(baseController.getRightX(), 2) + Math.pow(baseController.getRightX(), 2) >= 0.5){
       if(baseController.getRightX() > 0){
         desRot = new Rotation2d(Math.atan(baseController.getRightY()/baseController.getRightX()));
@@ -109,5 +109,9 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     driveBase.periodic();
     SmartDashboard.putNumber("sanity", 5);
+    SmartDashboard.putNumber("blue cancoder", blue.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("red cancoder", red.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("orange cancoder", orange.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("green cancoder", green.getAbsolutePosition().getValue());
   }
 }

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import edu.wpi.first.wpilibj.interfaces;
 //import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj.XboxController;
 
 public class SwerveDrive extends SubsystemBase {
 
@@ -121,5 +122,8 @@ public class SwerveDrive extends SubsystemBase {
         red.setDesiredState(desiredStates[3]);
     }
 
-    //public void 
+    public void teleopControlSwerve(double x, double y){
+        //call method to set states from above, just using math and the x/y values established when calling method
+        //use arctan
+    }
 }
