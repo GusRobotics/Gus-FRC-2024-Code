@@ -93,6 +93,7 @@ public class Robot extends TimedRobot {
     // driveStates[3] = desiredState;
     // driveBase.setModuleStates(driveStates);
 
+    //if working apply a little deadband
     driveBase.teleopControlSwerve(baseController.getLeftX(), baseController.getLeftY(), baseController.getRightX());
 
     SmartDashboard.putNumber("sanity", 5);
