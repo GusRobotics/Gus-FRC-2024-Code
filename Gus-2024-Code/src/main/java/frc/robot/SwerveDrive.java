@@ -129,6 +129,8 @@ public class SwerveDrive extends SubsystemBase {
         //this works!!! time to scale the vectors!!
         //check if lefty is not 1 or -1 (full magnitudes)
         if(leftY < 0.9 && leftY > -0.9){
+            double scale = Math.sqrt(Math.pow(leftY, 2) + Math.pow(leftX, 2));
+            velocity = leftY * scale;
             //check if the values are low
             if(leftY < 0.05 && leftY > -0.05){
                 if(leftX >= 0.05){
@@ -138,9 +140,6 @@ public class SwerveDrive extends SubsystemBase {
                 }
                 velocity = leftX;
             }
-            //since values are not low- in the middle- time to scale!
-            double scale = Math.sqrt(Math.pow(leftY, 2) + Math.pow(leftX, 2));
-            velocity = leftY * scale;
         }
 
         //right stuff we're not dealing with rn
