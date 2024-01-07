@@ -129,12 +129,20 @@ public class SwerveDrive extends SubsystemBase {
         
         Rotation2d desRot = new Rotation2d(Math.atan(leftY/leftX)/(Math.PI *2));
 
-        if(rightX >= 0.1){
-            desRot = new Rotation2d(90);
+        if(leftY < 0.05 && leftY > -0.05){
+            if(leftX >= 0.05){
+                desRot = new Rotation2d(90);
+            } else if(leftX <= -0.05){
+                desRot = new Rotation2d(-90);
+            }
+            leftY = leftX;
         }
-        else if(rightX <= -0.1){
-            desRot = new Rotation2d(-90);
-        }
+        // if(rightX >= 0.1){
+        //     desRot = new Rotation2d(90);
+        // }
+        // else if(rightX <= -0.1){
+        //     desRot = new Rotation2d(-90);
+        // }
         
         SwerveModuleState desiredState = new SwerveModuleState(leftY, desRot);
 
