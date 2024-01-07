@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 //import edu.wpi.first.wpilibj.interfaces;
 //import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.wpilibj.XboxController;
 
 public class SwerveDrive extends SubsystemBase {
 
@@ -122,8 +121,31 @@ public class SwerveDrive extends SubsystemBase {
         red.setDesiredState(desiredStates[3]);
     }
 
-    public void teleopControlSwerve(double x, double y){
+    public void teleopControlSwerve(double leftX, double leftY, double rightX){
         //call method to set states from above, just using math and the x/y values established when calling method
         //use arctan
+        //parameters for state: meters per second (can be taken from the y value) and 
+        //rotation (can be taken from )
+        
+        Rotation2d desRot = new Rotation2d(Math.atan(leftY/leftX)/(Math.PI *2));
+
+        if(rightX >= 0.1){
+            desRot = new Rotation2d(90);
+        }
+        else if(rightX <= -0.1){
+            desRot = new Rotation2d(-90);
+        }
+        
+        SwerveModuleState desiredState = new SwerveModuleState(leftY, desRot);
+
+        driveStates[0] = desiredState; 
+        driveStates[1] = desiredState;
+        driveStates[2] = desiredState;
+        driveStates[3] = desiredState;
+
+        blue.setDesiredState(desiredState);
+        orange.setDesiredState(desiredState);
+        green.setDesiredState(desiredState);
+        red.setDesiredState(desiredState);
     }
 }

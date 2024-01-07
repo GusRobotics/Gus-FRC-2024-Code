@@ -76,22 +76,24 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     //apply deadband once the code is written
-    if(Math.pow(baseController.getRightX(), 2) + Math.pow(baseController.getRightX(), 2) >= 0.5){
-      if(baseController.getRightX() > 0){
-        desRot = new Rotation2d(Math.atan(baseController.getRightY()/baseController.getRightX()));
-      }
-      else{
-        desRot = new Rotation2d(Math.PI - Math.atan(baseController.getRightY()/baseController.getRightX()));
-      }
-    }
+    // if(Math.pow(baseController.getRightX(), 2) + Math.pow(baseController.getRightX(), 2) >= 0.5){
+    //   if(baseController.getRightX() > 0){
+    //     desRot = new Rotation2d(Math.atan(baseController.getRightY()/baseController.getRightX()));
+    //   }
+    //   else{
+    //     desRot = new Rotation2d(Math.PI - Math.atan(baseController.getRightY()/baseController.getRightX()));
+    //   }
+    // }
 
-    SwerveModuleState desiredState = new SwerveModuleState(baseController.getLeftY()*2, desRot);
+    // SwerveModuleState desiredState = new SwerveModuleState(baseController.getLeftY()*2, desRot);
 
-    driveStates[0] = desiredState; 
-    driveStates[1] = desiredState;
-    driveStates[2] = desiredState;
-    driveStates[3] = desiredState;
-    driveBase.setModuleStates(driveStates);
+    // driveStates[0] = desiredState; 
+    // driveStates[1] = desiredState;
+    // driveStates[2] = desiredState;
+    // driveStates[3] = desiredState;
+    // driveBase.setModuleStates(driveStates);
+
+    driveBase.teleopControlSwerve(baseController.getLeftX(), baseController.getLeftY(), baseController.getRightX());
 
     SmartDashboard.putNumber("sanity", 5);
     SmartDashboard.putNumber("Desired Rotation", Math.atan(baseController.getRightY()/baseController.getRightX())/(Math.PI *2));
