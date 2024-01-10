@@ -137,7 +137,8 @@ public class SwerveDrive extends SubsystemBase {
             velocity = leftX;
         } else if(leftY < 0.9 && leftY > -0.9){
             double scale = Math.sqrt(Math.pow(leftY, 2) + Math.pow(leftX, 2));
-            velocity = leftY * scale;
+            //try mult vs division
+            velocity = leftY / scale;
         }
 
         //right stuff we're not dealing with rn
