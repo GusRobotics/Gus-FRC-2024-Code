@@ -123,7 +123,7 @@ public class SwerveDrive extends SubsystemBase {
 
     public void teleopControlSwerve(double leftX, double leftY, double rightX){
         //value originally Math.atan(leftY/leftX)/(Math.PI *2), got rid of dividing by pi
-        Rotation2d desRot = new Rotation2d(Math.atan(leftY/leftX));
+        Rotation2d desRot = new Rotation2d(Math.atan2(leftY, leftX));
         double velocity = leftY; 
 
         //this works!!! time to scale the vectors!!
