@@ -9,6 +9,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+//import com.ctre.phoenix.sensors.PigeonIMU;
+
+
+
+import com.ctre.phoenix6.hardware.CANcoder;
 //import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 //FOR THE FIRST MEETING AFTER KICKOFF:: 
@@ -32,6 +37,11 @@ public class Robot extends TimedRobot {
   SwerveDrive driveBase = new SwerveDrive();
   SwerveModuleState driveStates[] = new SwerveModuleState[4];
 
+  CANcoder blue = new CANcoder(3);
+  CANcoder orange = new CANcoder(1);
+  CANcoder green = new CANcoder(5);
+  CANcoder red = new CANcoder(2);
+
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -40,10 +50,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    // We need to invert one side of the drivetrain so that positive voltages
-    // result in both sides moving forward. Depending on how your robot's
-    // gearbox is constructed, you might have to invert the left side instead.
-
 
   }
 
@@ -64,7 +70,7 @@ public class Robot extends TimedRobot {
     // m_robotDrive.stopMotor(); // stop robot
     // }
   }
-//GREEN AND ORANGE NEED REVERSING
+
   /**
    * This function is called once each time the robot enters teleoperated mode.
    */
@@ -76,23 +82,30 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
-    if(Math.pow(baseController.getRightX(), 2) + Math.pow(baseController.getRightX(), 2) >= 0.5){
-      if(baseController.getRightX() > 0){
-        desRot = new Rotation2d(Math.atan(baseController.getRightY()/baseController.getRightX()));
-      }
-      else{
-        desRot = new Rotation2d(Math.PI - Math.atan(baseController.getRightY()/baseController.getRightX()));
-      }
-    }
+    //apply deadband once the code is written
+    // if(Math.pow(baseController.getRightX(), 2) + Math.pow(baseController.getRightX(), 2) >= 0.5){
+    //   if(baseController.getRightX() > 0){
+    //     desRot = new Rotation2d(Math.atan(baseController.getRightY()/baseController.getRightX()));
+    //   }
+    //   else{
+    //     desRot = new Rotation2d(Math.PI - Math.atan(baseController.getRightY()/baseController.getRightX()));
+    //   }
+    // }
 
-    SwerveModuleState desiredState = new SwerveModuleState(baseController.getLeftY()*2, desRot);
+    // SwerveModuleState desiredState = new SwerveModuleState(baseController.getLeftY()*2, desRot);
 
-    driveStates[0] = desiredState; 
-    driveStates[1] = desiredState;
-    driveStates[2] = desiredState;
-    driveStates[3] = desiredState;
-    driveBase.setModuleStates(driveStates);
+    // driveStates[0] = desiredState; 
+    // driveStates[1] = desiredState;
+    // driveStates[2] = desiredState;
+    // driveStates[3] = desiredState;
+    // driveBase.setModuleStates(driveStates);
 
+    //if working apply a little deadband
+
+    //temporarily ignoring this bc its execute
+
+    //driveBase.teleopControlSwerve(baseController.getLeftX(), baseController.getLeftY(), baseController.getRightX());
+    driveBase.execute(baseController.getLeftX(), baseController.getLeftY(), baseController.getRightX());
     SmartDashboard.putNumber("sanity", 5);
     SmartDashboard.putNumber("Desired Rotation", Math.atan(baseController.getRightY()/baseController.getRightX())/(Math.PI *2));
     driveBase.periodic();
@@ -109,5 +122,9 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     driveBase.periodic();
     SmartDashboard.putNumber("sanity", 5);
+    SmartDashboard.putNumber("blue cancoder", blue.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("red cancoder", red.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("orange cancoder", orange.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("green cancoder", green.getAbsolutePosition().getValue());
   }
 }

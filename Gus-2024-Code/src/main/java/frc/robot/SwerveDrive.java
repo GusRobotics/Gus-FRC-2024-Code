@@ -10,8 +10,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 //import edu.wpi.first.wpilibj.interfaces;
 //import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 public class SwerveDrive extends SubsystemBase {
 
@@ -22,6 +25,10 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveModule red;
     private final SwerveModule green;
     private final SwerveModule orange;
+    private SlewRateLimiter xLimiter = new SlewRateLimiter(0.5);
+    private SlewRateLimiter yLimiter = new SlewRateLimiter(0.5);
+    private SlewRateLimiter turningLimiter = new SlewRateLimiter(0.5);
+    private final Pigeon2 pigeon = new Pigeon2(constants.kPigeonPort);
 
     //toggling between SwerveModelState and SwerveModelPosition, attempting to debug odometer
     SwerveModuleState driveStates[] = new SwerveModuleState[4];
@@ -121,5 +128,77 @@ public class SwerveDrive extends SubsystemBase {
         red.setDesiredState(desiredStates[3]);
     }
 
-    //public void 
+    public Rotation2d getRotation2D(){
+        return pigeon.getRotation2d();
+    }
+
+    public void teleopControlSwerve(double leftX, double leftY, double rightX){
+        //value originally Math.atan(leftY/leftX)/(Math.PI *2), got rid of dividing by pi
+        Rotation2d desRot = new Rotation2d(Math.atan2(leftY, leftX));
+        double velocity = leftY; 
+
+        //this works!!! time to scale the vectors!!
+        //check if lefty is not 1 or -1 (full magnitudes)
+        //SlewRateLimiter xLimiter = new SlewRateLimiter(0.5);
+        //SlewRateLimiter yLimiter = new SlewRateLimiter(0.5);
+        if(leftY < 0.05 && leftY > -0.05){
+            if(leftX >= 0.05){
+                desRot = new Rotation2d(90);
+                leftX = xLimiter.calculate(leftX) * constants.kTeleDriveMaxSpeedMetersPerSecond;
+            } else if(leftX <= -0.05){
+                desRot = new Rotation2d(-90);
+            }
+            velocity = leftX;
+        }
+            //try mult vs division
+            leftY = yLimiter.calculate(leftX) * constants.kTeleDriveMaxSpeedMetersPerSecond;
+            velocity = leftY;
+        
+        SwerveModuleState desiredState = new SwerveModuleState(velocity, desRot);
+
+        //leave this alone this is the only thing that works
+        driveStates[0] = desiredState; 
+        driveStates[1] = desiredState;
+        driveStates[2] = desiredState;
+        driveStates[3] = desiredState;
+
+        blue.setDesiredState(desiredState);
+        orange.setDesiredState(desiredState);
+        green.setDesiredState(desiredState);
+        red.setDesiredState(desiredState);
+
+        
+    }
+
+    public void execute(double leftX, double leftY, double rightX) {
+        // 1. Get real-time joystick inputs
+        double xSpeed = leftX;
+        double ySpeed = leftY;
+        double turningSpeed = rightX;
+
+        // 2. Apply deadband
+        xSpeed = Math.abs(xSpeed) > constants.OIConstants ? xSpeed : 0.0;
+        ySpeed = Math.abs(ySpeed) > constants.OIConstants ? ySpeed : 0.0;
+        turningSpeed = Math.abs(turningSpeed) > constants.OIConstants ? turningSpeed : 0.0;
+
+        // 3. Make the driving smoother
+        xSpeed = xLimiter.calculate(xSpeed) * constants.kTeleDriveMaxSpeedMetersPerSecond;
+        ySpeed = yLimiter.calculate(ySpeed) * constants.kTeleDriveMaxSpeedMetersPerSecond;
+        turningSpeed = turningLimiter.calculate(turningSpeed)
+                * constants.kTeleDriveMaxAngularSpeedRadiansPerSecond;
+
+        // 4. Construct desired chassis speeds
+        ChassisSpeeds chassisSpeeds;
+
+        //ensures field orientation 
+            chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
+                    xSpeed, ySpeed, turningSpeed, getRotation2D());
+
+        // 5. Convert chassis speeds to individual module states
+        SwerveModuleState[] moduleStates = constants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+
+        // 6. Output each module states to wheels
+        this.setModuleStates(moduleStates);
+    }
+
 }

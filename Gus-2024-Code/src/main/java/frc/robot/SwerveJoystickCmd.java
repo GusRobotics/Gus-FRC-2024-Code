@@ -11,7 +11,7 @@ public class SwerveJoystickCmd extends CommandBase {
 
     private final SwerveDrive swerveSubsystem;
     private final Supplier<Double> xSpdFunction, ySpdFunction, turningSpdFunction;
-    private final Supplier<Boolean> fieldOrientedFunction;
+    //private final Supplier<Boolean> fieldOrientedFunction;
     private final SlewRateLimiter xLimiter, yLimiter, turningLimiter;
 
     public SwerveJoystickCmd(SwerveDrive swerveSubsystem,
@@ -21,7 +21,7 @@ public class SwerveJoystickCmd extends CommandBase {
         this.xSpdFunction = xSpdFunction;
         this.ySpdFunction = ySpdFunction;
         this.turningSpdFunction = turningSpdFunction;
-        this.fieldOrientedFunction = fieldOrientedFunction;
+        //this.fieldOrientedFunction = fieldOrientedFunction;
         this.xLimiter = new SlewRateLimiter(constants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.yLimiter = new SlewRateLimiter(constants.kTeleDriveMaxAccelerationUnitsPerSecond);
         this.turningLimiter = new SlewRateLimiter(constants.kTeleDriveMaxAngularAccelerationUnitsPerSecond);
@@ -52,14 +52,10 @@ public class SwerveJoystickCmd extends CommandBase {
 
         // 4. Construct desired chassis speeds
         ChassisSpeeds chassisSpeeds;
-        if (fieldOrientedFunction.get()) {
-            // Relative to field
+
+        //ensures field orientation 
             chassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
                     xSpeed, ySpeed, turningSpeed, swerveSubsystem.getRotation2d());
-        } else {
-            // Relative to robot
-            chassisSpeeds = new ChassisSpeeds(xSpeed, ySpeed, turningSpeed);
-        }
 
         // 5. Convert chassis speeds to individual module states
         SwerveModuleState[] moduleStates = constants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);

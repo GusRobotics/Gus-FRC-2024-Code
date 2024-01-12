@@ -86,6 +86,7 @@ public class constants {
         public static final double kTeleDriveMaxAngularAccelerationUnitsPerSecond = 3;
 
         public static final int kDriverControllerPort = 0;
+        public static final int kPigeonPort = 8;
 
         public static final int kDriverYAxis = 1;
         public static final int kDriverXAxis = 0;
