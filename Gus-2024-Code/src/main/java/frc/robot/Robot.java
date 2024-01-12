@@ -38,11 +38,6 @@ public class Robot extends TimedRobot {
   CANcoder green = new CANcoder(5);
   CANcoder red = new CANcoder(2);
 
-  CANcoder blue = new CANcoder(3);
-  CANcoder orange = new CANcoder(1);
-  CANcoder green = new CANcoder(5);
-  CANcoder red = new CANcoder(2);
-
 
   /**
    * This function is run when the robot is first started up and should be used
