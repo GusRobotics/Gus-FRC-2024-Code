@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you 9 modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -36,6 +32,11 @@ public class Robot extends TimedRobot {
 
   SwerveDrive driveBase = new SwerveDrive();
   SwerveModuleState driveStates[] = new SwerveModuleState[4];
+
+  CANcoder blue = new CANcoder(3);
+  CANcoder orange = new CANcoder(1);
+  CANcoder green = new CANcoder(5);
+  CANcoder red = new CANcoder(2);
 
   CANcoder blue = new CANcoder(3);
   CANcoder orange = new CANcoder(1);
@@ -122,6 +123,10 @@ public class Robot extends TimedRobot {
   public void testPeriodic() {
     driveBase.periodic();
     SmartDashboard.putNumber("sanity", 5);
+    SmartDashboard.putNumber("blue cancoder", blue.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("red cancoder", red.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("orange cancoder", orange.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("green cancoder", green.getAbsolutePosition().getValue());
     SmartDashboard.putNumber("blue cancoder", blue.getAbsolutePosition().getValue());
     SmartDashboard.putNumber("red cancoder", red.getAbsolutePosition().getValue());
     SmartDashboard.putNumber("orange cancoder", orange.getAbsolutePosition().getValue());
