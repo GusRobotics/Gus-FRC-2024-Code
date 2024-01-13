@@ -24,8 +24,11 @@ public class SwerveModule {
     private final CANSparkMax driveMotor;
     private final CANSparkMax turningMotor;
 
-    private final RelativeEncoder driveEncoder;
-    private final RelativeEncoder turningEncoder;
+    // private final RelativeEncoder driveEncoder;
+    // private final RelativeEncoder turningEncoder;
+
+    private final CANcoder driveEncoder;
+    private final CANcoder turningEncoder;
 
     private final PIDController turningPidController;
 
@@ -94,6 +97,10 @@ public class SwerveModule {
         return turningEncoder.getVelocity();
     }
 
+    public StatusSignal<Double> getVelocity()
+   {
+       return super.lookupStatusSignal(SpnValue.CANcoder_Velocity.value, Double.class, "Velocity", true);
+    }
     public double getAbsoluteEncoderRad() {
         // double angle = absoluteEncoder.getVoltage() / RobotController.getVoltage5V();
         // angle *= 2.0 * Math.PI;
