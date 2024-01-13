@@ -2,7 +2,6 @@ package frc.robot;
 
 //import com.ctre.phoenix.sensors.PigeonIMU;
 import com.ctre.phoenix6.hardware.CANcoder;
-
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -36,6 +35,8 @@ public class Robot extends TimedRobot {
   CANcoder orange = new CANcoder(1);
   CANcoder green = new CANcoder(5);
   CANcoder red = new CANcoder(2);
+
+  //RelativeEncoder blue = new RelativeEncoder(3);
 
   /**
    * This function is run when the robot is first started up and should be used
