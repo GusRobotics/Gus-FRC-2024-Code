@@ -1,12 +1,5 @@
 package frc.robot;
 
-// import edu.wpi.first.wpilibj.AnalogInput;
-// import edu.wpi.first.wpilibj.RobotController;
-//import edu.wpi.first.wpilibj.drive.RobotDriveBase.MotorType;
-//import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-//import com.ctre.phoenix.sensors.WPI_Pigeon2;
-//import com.ctre.phoenix.sensors.WPI_CANCoder;
-//import edu.wpi.first.wpilibj.XboxController;
 import com.ctre.phoenix6.hardware.CANcoder;
 //import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.CANSparkMax;
@@ -18,17 +11,12 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 //import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import com.ctre.phoenix6.hardware.Pigeon2;
 
 public class SwerveModule {
 
     private final CANSparkMax driveMotor;
     private final CANSparkMax turningMotor;
-
-    // private final RelativeEncoder driveEncoder;
-    // private final RelativeEncoder turningEncoder;
-
-    private final CANcoder driveEncoder;
-    private final CANcoder turningEncoder;
 
     private final PIDController turningPidController;
 
@@ -40,21 +28,15 @@ public class SwerveModule {
             int absoluteEncoderId, double absoluteEncoderOffset, boolean absoluteEncoderReversed, boolean reversedDrive,
             boolean reversedTurn) {
 
-        // this.absoluteEncoderOffsetRad = absoluteEncoderOffset;
-        // this.absoluteEncoderReversed = absoluteEncoderReversed;
         // swtiched AbsoluteEncoder to type CANcoder --> broke the getVoltage() and
         // getChannel() methods
         absoluteEncoder = new CANcoder(absoluteEncoderId);
-        // absoluteEncoder = new AnalogInput(absoluteEncoderId);
 
         driveMotor = new CANSparkMax(driveMotorId, MotorType.kBrushless);
         turningMotor = new CANSparkMax(turningMotorId, MotorType.kBrushless);
 
         driveMotor.setInverted(driveMotorReversed);
         turningMotor.setInverted(turningMotorReversed);
-
-        driveEncoder = driveMotor.getEncoder();
-        turningEncoder = turningMotor.getEncoder();
 
         // driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
         // driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
@@ -74,33 +56,37 @@ public class SwerveModule {
     }
 
     public double getDrivePosition() {
-        return driveEncoder.getPosition();
+        return absoluteEncoder.getAbsolutePosition().getValue();
     }
 
-    // public CANSparkMax getDriveMotor(int driveId) {
-    // return new CANSparkMax(driveId, MotorType.kBrushless);
-    // }
+    public CANSparkMax getDriveMotor(int driveId) {
+    return new CANSparkMax(driveId, MotorType.kBrushless);
+    }
 
-    // public CANSparkMax getSteeringMotor(int steerId) {
-    // return new CANSparkMax(steerId, MotorType.kBrushless);
-    // }
+    public CANSparkMax getSteeringMotor(int steerId) {
+    return new CANSparkMax(steerId, MotorType.kBrushless);
+    }
 
     public double getTurningPosition() {
-        return (turningEncoder.getPosition() * (1.0 / (150.0 / 7.0))) * Math.PI * 2;
+        return (absoluteEncoder.getAbsolutePosition().getValue() * (1.0 / (150.0 / 7.0))) * Math.PI * 2;
     }
-
+    //need drive motor encoder??
     public double getDriveVelocity() {
         return driveEncoder.getVelocity();
     }
 
-    public double getTurningVelocity() {
-        return turningEncoder.getVelocity();
-    }
+    //kinda confused at the functionality of this method bc idk the parent class but im thinking
+    //we dont need it because the pigeon also returns the same thing
+//     public StatusSignal<Double> getVelocity()
+//    {
+//        return super.lookupStatusSignal(SpinValue.CANcoder_Velocity.value, Double.class, "Velocity", true);
+//     }
 
-    public StatusSignal<Double> getVelocity()
-   {
-       return super.lookupStatusSignal(SpnValue.CANcoder_Velocity.value, Double.class, "Velocity", true);
-    }
+    //replacement method for above
+    //ok so update the above method needs straight velocity and pigeon only returns angular velocity so id use the driving
+    //encoder id just from the spark bc obv that doesnt present as many issues as the rotational
+
+
     public double getAbsoluteEncoderRad() {
         // double angle = absoluteEncoder.getVoltage() / RobotController.getVoltage5V();
         // angle *= 2.0 * Math.PI;
@@ -111,8 +97,7 @@ public class SwerveModule {
     }
 
     public void resetEncoders() {
-        driveEncoder.setPosition(0);
-        turningEncoder.setPosition(0);
+        absoluteEncoder.setPosition(0);
     }
 
     // switched from return type swervemoduleposition to swervemodulestate for

@@ -1,6 +1,7 @@
 package frc.robot;
-
-import com.ctre.phoenix6.hardware.Pigeon2;
+//got rid of that pigeon import bc  for some reason it wasn't getting the values of old class
+//import com.ctre.phoenix6.hardware.Pigeon2;
+import com.ctre.phoenix6.hardware.core.CorePigeon2;
 //import com.ctre.phoenix6.hardware.CANcoder;
 import com.kauailabs.navx.frc.AHRS;
 
@@ -27,7 +28,7 @@ public class SwerveDrive extends SubsystemBase {
     private SlewRateLimiter xLimiter = new SlewRateLimiter(0.5);
     private SlewRateLimiter yLimiter = new SlewRateLimiter(0.5);
     private SlewRateLimiter turningLimiter = new SlewRateLimiter(0.5);
-    private final Pigeon2 pigeon = new Pigeon2(constants.kPigeonPort);
+    private final CorePigeon2 pigeon = new CorePigeon2(constants.kPigeonPort);
 
     // toggling between SwerveModelState and SwerveModelPosition, attempting to
     // debug odometer
@@ -97,6 +98,9 @@ public class SwerveDrive extends SubsystemBase {
         return Rotation2d.fromDegrees(getHeading());
     }
 
+    public double getTurningVelocity() {
+        return pigeon.getAngularVelocityX().getValue();
+    }
     // public Pose2d getPose() {
     // return odometer.getPoseMeters();
     // }
@@ -131,7 +135,10 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public Rotation2d getRotation2D() {
-        return pigeon.getRotation2d();
+        //gets pigeon value for rotation in degrees, converts to radians
+        double numDegrees = pigeon.getYaw().getValue();
+        double radians = numDegrees * (Math.PI/180);
+        return new Rotation2d(radians);
     }
 
     public void teleopControlSwerve(double leftX, double leftY, double rightX) {
