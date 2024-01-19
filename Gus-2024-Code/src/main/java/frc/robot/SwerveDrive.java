@@ -98,9 +98,9 @@ public class SwerveDrive extends SubsystemBase {
         return Rotation2d.fromDegrees(getHeading());
     }
 
-    public double getTurningVelocity() {
-        return pigeon.getAngularVelocityX().getValue();
-    }
+    // public double getTurningVelocity() {
+    //     return pigeon.getAngularVelocityX().getValue();
+    // }
     // public Pose2d getPose() {
     // return odometer.getPoseMeters();
     // }

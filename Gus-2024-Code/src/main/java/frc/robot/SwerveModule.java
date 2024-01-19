@@ -71,9 +71,9 @@ public class SwerveModule {
         return (absoluteEncoder.getAbsolutePosition().getValue() * (1.0 / (150.0 / 7.0))) * Math.PI * 2;
     }
     //need drive motor encoder??
-    public double getDriveVelocity() {
-        return driveEncoder.getVelocity();
-    }
+    // public double getDriveVelocity() {
+    //     return driveEncoder.getVelocity();
+    // }
 
     //kinda confused at the functionality of this method bc idk the parent class but im thinking
     //we dont need it because the pigeon also returns the same thing
