@@ -122,14 +122,12 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
     driveBase.periodic();
+    driveBase.execute(baseController.getLeftX(), baseController.getLeftY(), baseController.getRightX());
     SmartDashboard.putNumber("sanity", 5);
     SmartDashboard.putNumber("blue cancoder", blue.getAbsolutePosition().getValue());
     SmartDashboard.putNumber("red cancoder", red.getAbsolutePosition().getValue());
     SmartDashboard.putNumber("orange cancoder", orange.getAbsolutePosition().getValue());
     SmartDashboard.putNumber("green cancoder", green.getAbsolutePosition().getValue());
-    SmartDashboard.putNumber("blue cancoder", blue.getAbsolutePosition().getValue());
-    SmartDashboard.putNumber("red cancoder", red.getAbsolutePosition().getValue());
-    SmartDashboard.putNumber("orange cancoder", orange.getAbsolutePosition().getValue());
-    SmartDashboard.putNumber("green cancoder", green.getAbsolutePosition().getValue());
+
   }
 }

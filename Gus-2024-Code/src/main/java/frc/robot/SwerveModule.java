@@ -5,7 +5,7 @@ import com.ctre.phoenix6.hardware.CANcoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 //import com.revrobotics.CANEncoder;
-import com.revrobotics.RelativeEncoder;
+//import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -21,6 +21,10 @@ public class SwerveModule {
     private final PIDController turningPidController;
 
     private final CANcoder absoluteEncoder;
+
+    //private final RelativeEncoder
+
+    Pigeon2 pigeon = new Pigeon2(constants.kPigeonPort, "canbus");
     // private final boolean absoluteEncoderReversed;
     // private final double absoluteEncoderOffsetRad;
 
@@ -71,9 +75,9 @@ public class SwerveModule {
         return (absoluteEncoder.getAbsolutePosition().getValue() * (1.0 / (150.0 / 7.0))) * Math.PI * 2;
     }
     //need drive motor encoder??
-    // public double getDriveVelocity() {
-    //     return driveEncoder.getVelocity();
-    // }
+    public double getDriveVelocity() {
+        return driveMotor.getEncoder().getVelocity();
+    }
 
     //kinda confused at the functionality of this method bc idk the parent class but im thinking
     //we dont need it because the pigeon also returns the same thing
@@ -103,7 +107,7 @@ public class SwerveModule {
     // switched from return type swervemoduleposition to swervemodulestate for
     // functionality
     public SwerveModuleState getState() {
-        return new SwerveModuleState(getDriveVelocity(), new Rotation2d(getTurningPosition()));
+        return new SwerveModuleState(driveMotor.getEncoder().getVelocity(), new Rotation2d(getTurningPosition()));
     }
 
     public void setDesiredState(SwerveModuleState state) {
