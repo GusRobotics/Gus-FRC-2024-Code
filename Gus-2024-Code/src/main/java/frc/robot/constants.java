@@ -75,7 +75,8 @@ public class constants {
         public static final double kRedDriveAbsoluteEncoderOffsetRad = -4.811;
 
         public static final double kPhysicalMaxSpeedMetersPerSecond = 5;
-        public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
+        //below originally 2 * 2 * Math.PI
+        public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 4 * 2 * Math.PI;
 
         public static final int driveMotorCurrentLimit = 50;
 

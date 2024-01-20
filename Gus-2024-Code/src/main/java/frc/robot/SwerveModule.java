@@ -21,12 +21,9 @@ public class SwerveModule {
     private final PIDController turningPidController;
 
     private final CANcoder absoluteEncoder;
-
-    //private final RelativeEncoder
-
-    Pigeon2 pigeon = new Pigeon2(constants.kPigeonPort, "canbus");
     // private final boolean absoluteEncoderReversed;
     // private final double absoluteEncoderOffsetRad;
+    Pigeon2 pigeon = new Pigeon2(constants.kPigeonPort, "Canbus");
 
     public SwerveModule(int driveMotorId, int turningMotorId, boolean driveMotorReversed, boolean turningMotorReversed,
             int absoluteEncoderId, double absoluteEncoderOffset, boolean absoluteEncoderReversed, boolean reversedDrive,
@@ -42,7 +39,7 @@ public class SwerveModule {
         driveMotor.setInverted(driveMotorReversed);
         turningMotor.setInverted(turningMotorReversed);
 
-        // driveEncoder.setPositionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
+        // driveEncoder.setPosabsoluteitionConversionFactor(ModuleConstants.kDriveEncoderRot2Meter);
         // driveEncoder.setVelocityConversionFactor(ModuleConstants.kDriveEncoderRPM2MeterPerSec);
         // turningEncoder.setPositionConversionFactor(ModuleConstants.kTurningEncoderRot2Rad);
         // turningEncoder.setVelocityConversionFactor(ModuleConstants.kTurningEncoderRPM2RadPerSec);
@@ -77,6 +74,10 @@ public class SwerveModule {
     //need drive motor encoder??
     public double getDriveVelocity() {
         return driveMotor.getEncoder().getVelocity();
+    }
+
+    public double getCancoder(){
+        return absoluteEncoder.getAbsolutePosition().getValue();
     }
 
     //kinda confused at the functionality of this method bc idk the parent class but im thinking

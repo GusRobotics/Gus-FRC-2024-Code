@@ -98,9 +98,9 @@ public class SwerveDrive extends SubsystemBase {
         return Rotation2d.fromDegrees(getHeading());
     }
 
-    public double getTurningVelocity() {
-        return pigeon.getAngularVelocityXDevice().getValue();
-    }
+    // public double getTurningVelocity() {
+    //     return pigeon.getAngularVelocityXDevice().getValue();
+    // }
     // public Pose2d getPose() {
     // return odometer.getPoseMeters();
     // }
@@ -181,8 +181,8 @@ public class SwerveDrive extends SubsystemBase {
 
     public void execute(double leftX, double leftY, double rightX) {
         // 1. Get real-time joystick inputs
-        double xSpeed = leftX;
-        double ySpeed = leftY;
+        double xSpeed = leftX*5;
+        double ySpeed = leftY*5;
         double turningSpeed = rightX;
 
         // 2. Apply deadband

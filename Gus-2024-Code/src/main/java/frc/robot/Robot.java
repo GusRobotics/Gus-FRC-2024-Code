@@ -1,14 +1,12 @@
 package frc.robot;
 
-//import com.ctre.phoenix.sensors.PigeonIMU;
+import com.ctre.phoenix6.hardware.core.CorePigeon2;
 import com.ctre.phoenix6.hardware.CANcoder;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-//import edu.wpi.first.math.kinematics.SwerveModulePosition;
 
 //FOR THE FIRST MEETING AFTER KICKOFF:: 
 //write method to read the cancoder values in SwerveDrive, use in robotinit to display to smartdashboard, 
@@ -31,10 +29,56 @@ public class Robot extends TimedRobot {
   SwerveDrive driveBase = new SwerveDrive();
   SwerveModuleState driveStates[] = new SwerveModuleState[4];
 
-  CANcoder blue = new CANcoder(3);
-  CANcoder orange = new CANcoder(1);
-  CANcoder green = new CANcoder(5);
-  CANcoder red = new CANcoder(2);
+  CANcoder blueCan = new CANcoder(3);
+  CANcoder orangeCan = new CANcoder(1);
+  CANcoder greenCan = new CANcoder(5);
+  CANcoder redCan = new CANcoder(2);
+
+  private final CorePigeon2 pigeon = new CorePigeon2(constants.kPigeonPort);
+
+  SwerveModule blue = new SwerveModule(
+    constants.blueDrive,
+    constants.blueSteer,
+    constants.kBlueDriveEncoderReversed,
+    constants.kBlueTurningEncoderReversed,
+    constants.kBlueDriveAbsoluteEncoderPort,
+    constants.kBlueDriveAbsoluteEncoderOffsetRad,
+    constants.kBlueDriveAbsoluteEncoderReversed,
+    constants.blueDriveInvert,
+    constants.blueTurnInvert);
+
+    SwerveModule orange = new SwerveModule(
+    constants.orangeDrive,
+    constants.orangeSteer,
+    constants.kOrangeDriveEncoderReversed,
+    constants.kOrangeTurningEncoderReversed,
+    constants.kOrangeDriveAbsoluteEncoderPort,
+    constants.kOrangeDriveAbsoluteEncoderOffsetRad,
+    constants.kOrangeDriveAbsoluteEncoderReversed,
+    constants.orangeDriveInvert,
+    constants.orangeTurnInvert);
+
+    SwerveModule green = new SwerveModule(
+    constants.greenDrive,
+    constants.greenSteer,
+    constants.kGreenTurningEncoderReversed,
+    constants.kGreenTurningEncoderReversed,
+    constants.kGreenDriveAbsoluteEncoderPort,
+    constants.kGreenDriveAbsoluteEncoderOffsetRad,
+    constants.kGreenDriveAbsoluteEncoderReversed,
+    constants.greenDriveInvert,
+    constants.greenTurnInvert);
+
+    SwerveModule red = new SwerveModule(
+    constants.redDrive,
+    constants.redSteer,
+    constants.kRedDriveEncoderReversed,
+    constants.kRedTurningEncoderReversed,
+    constants.kRedDriveAbsoluteEncoderPort,
+    constants.kRedDriveAbsoluteEncoderOffsetRad,
+    constants.kRedDriveAbsoluteEncoderReversed,
+    constants.redDriveInvert,
+    constants.redTurnInvert);
 
   //RelativeEncoder blue = new RelativeEncoder(3);
 
@@ -89,20 +133,6 @@ public class Robot extends TimedRobot {
     // Math.atan(baseController.getRightY()/baseController.getRightX()));
     // }
     // }
-
-    // SwerveModuleState desiredState = new
-    // SwerveModuleState(baseController.getLeftY()*2, desRot);
-
-    // driveStates[0] = desiredState;
-    // driveStates[1] = desiredState;
-    // driveStates[2] = desiredState;
-    // driveStates[3] = desiredState;
-    // driveBase.setModuleStates(driveStates);
-
-    // if working apply a little deadband
-
-    // temporarily ignoring this bc its execute
-
     // driveBase.teleopControlSwerve(baseController.getLeftX(),
     // baseController.getLeftY(), baseController.getRightX());
     driveBase.execute(baseController.getLeftX(), baseController.getLeftY(), baseController.getRightX());
@@ -121,13 +151,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during test mode. */
   @Override
   public void testPeriodic() {
-    driveBase.periodic();
-    driveBase.execute(baseController.getLeftX(), baseController.getLeftY(), baseController.getRightX());
+    // driveBase.periodic();
+    // driveBase.execute(baseController.getLeftX(), baseController.getLeftY(), baseController.getRightX());
     SmartDashboard.putNumber("sanity", 5);
-    SmartDashboard.putNumber("blue cancoder", blue.getAbsolutePosition().getValue());
-    SmartDashboard.putNumber("red cancoder", red.getAbsolutePosition().getValue());
-    SmartDashboard.putNumber("orange cancoder", orange.getAbsolutePosition().getValue());
-    SmartDashboard.putNumber("green cancoder", green.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("blue cancoder", blueCan.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("red cancoder", redCan.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("orange cancoder", orangeCan.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("green cancoder", greenCan.getAbsolutePosition().getValue());
+    SmartDashboard.putNumber("pigeon yaw value", pigeon.getYaw().getValue());
 
   }
 }
